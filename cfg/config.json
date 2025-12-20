@@ -1,0 +1,21 @@
+{
+    "application": {
+        "name": "PyTerm Pro",
+        "version": "1.0.0",
+        "build": "2025-Alpha"
+    },
+    "behavior": {
+        "max_history_lines": 1000,
+        "clear_on_start": false,
+        "sound_enabled": true
+    },
+    "startup_commands": [
+        "echo Python Command Prompt. Type 'help' for commands.",
+        "echo Version 1.0.1 Beta",
+        "ver"
+    ],
+    "user": {
+        "default_username": "Admin",
+        "auto_login": true
+    }
+}

@@ -16,22 +16,22 @@ parent_dir = os.path.dirname(script_dir)
 cfg_dir = os.path.join(parent_dir, "cfg")
 tools_dir = os.path.join(parent_dir, "tools")
 
-# DEBUG: Print paths to see what's going on
-print(f"DEBUG: Script directory: {script_dir}")
-print(f"DEBUG: Parent directory: {parent_dir}")
-print(f"DEBUG: Tools directory: {tools_dir}")
-print(f"DEBUG: Tools folder exists? {os.path.exists(tools_dir)}")
-if os.path.exists(tools_dir):
-    print(f"DEBUG: Files in tools folder: {os.listdir(tools_dir)}")
-
-if os.path.exists(cfg_dir) and cfg_dir not in sys.path:
-    sys.path.insert(0, cfg_dir)
-    print(f"DEBUG: Added cfg_dir to sys.path")
-if os.path.exists(tools_dir) and tools_dir not in sys.path:
-    sys.path.insert(0, tools_dir)
-    print(f"DEBUG: Added tools_dir to sys.path")
-
-print(f"DEBUG: sys.path = {sys.path[:3]}")
+# for debugging, you can delete this
+# print(f"DEBUG: Script directory: {script_dir}")
+# print(f"DEBUG: Parent directory: {parent_dir}")
+# print(f"DEBUG: Tools directory: {tools_dir}")
+# print(f"DEBUG: Tools folder exists? {os.path.exists(tools_dir)}")
+# if os.path.exists(tools_dir):
+#    print(f"DEBUG: Files in tools folder: {os.listdir(tools_dir)}")
+#
+# if os.path.exists(cfg_dir) and cfg_dir not in sys.path:
+#    sys.path.insert(0, cfg_dir)
+#    print(f"DEBUG: Added cfg_dir to sys.path")
+# if os.path.exists(tools_dir) and tools_dir not in sys.path:
+#   sys.path.insert(0, tools_dir)
+#   print(f"DEBUG: Added tools_dir to sys.path")
+#
+# print(f"DEBUG: sys.path = {sys.path[:3]}")
 
 try:
     from config_loader import ConfigLoader
@@ -225,7 +225,6 @@ class TkinterCLI:
             self.write_to_screen("(c) Microsoft Corporation. All rights reserved.\n")
 
     def write_to_screen(self, text, color=None):
-        """Writes text to the read-only display area."""
         if color is None:
             color = self.current_color
 
@@ -244,14 +243,12 @@ class TkinterCLI:
         self.output.config(state=tk.DISABLED)
 
     def run_silent_command(self, full_command):
-        """Runs a command without printing the prompt line (used for startup)."""
         parts = full_command.split(maxsplit=1)
         cmd = parts[0].lower()
         args = parts[1] if len(parts) > 1 else ""
         self.execute_logic(cmd, args, silent=True)
 
     def process_command(self, event):
-        """Handles the user pressing Enter."""
         user_input = self.entry.get().strip()
         self.entry.delete(0, tk.END)
 
@@ -276,7 +273,6 @@ class TkinterCLI:
         self.execute_logic(cmd, args, silent=False)
 
     def execute_logic(self, cmd, args, silent=False):
-        """Central command dispatcher."""
         commands = {
             "quit": self.root.quit,
             "q": self.root.quit,
@@ -426,7 +422,7 @@ class TkinterCLI:
                 self.write_to_screen(f"{indent}|-- {dirname}/")
                 subindent = "|   " * (level + 1)
                 for f in files:
-                    if level < 2:  # Limit depth to avoid overwhelming output
+                    if level < 2:
                         self.write_to_screen(f"{subindent}|-- {f}")
         except Exception as e:
             self.write_to_screen(f"Error: {e}", "red")
@@ -541,7 +537,6 @@ class TkinterCLI:
             self.write_to_screen("Error: Provide a math expression.", "red")
             return
         try:
-            # Basic security check
             allowed_chars = "0123456789+-*/(). "
             if all(c in allowed_chars for c in expression):
                 result = eval(expression)
@@ -599,7 +594,6 @@ class TkinterCLI:
             self.write_to_screen(f"{idx}: {cmd}")
 
     def show_logs(self):
-        """Display today's command logs."""
         if not self.logger:
             self.write_to_screen("Logging is not available.", "red")
             return
@@ -613,7 +607,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = TkinterCLI(root)
 
-    # Log session end when window closes
     def on_closing():
         if app.logger:
             app.logger.log_session_end()
